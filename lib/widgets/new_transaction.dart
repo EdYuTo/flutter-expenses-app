@@ -6,23 +6,22 @@ class NewTransaction extends StatefulWidget {
   NewTransaction(this._addNewTransaction);
 
   @override
-  State<StatefulWidget> createState() => _NewTransactionState(_addNewTransaction);
+  State<StatefulWidget> createState() => _NewTransactionState();
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final Function _addNewTransaction;
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
-  _NewTransactionState(this._addNewTransaction);
 
   void _submitData() {
     if (titleController.text.isEmpty || amountController.text.isEmpty || double.parse(amountController.text) < 0)
       return;
-    _addNewTransaction(
+    widget._addNewTransaction(
         titleController.text,
         double.parse(amountController.text),
     );
+    Navigator.of(context).pop();
   }
 
   @override
