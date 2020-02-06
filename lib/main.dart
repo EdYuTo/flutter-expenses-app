@@ -10,7 +10,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'Expenses App',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+        fontFamily: 'Quicksand',
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                ),
+              ),
+        ),
+      ),
       home: MyHomePage(),
     );
   }
@@ -24,10 +43,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePage extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    Transaction(id: 't1', title: 'Comida', amount: 69.99, date: DateTime.now()),
-    Transaction(id: 't2', title: 'Bebida', amount: 15.99, date: DateTime.now()),
-  ];
+  final List<Transaction> _userTransactions = [];
 
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTransaction = Transaction(
@@ -54,7 +70,9 @@ class _MyHomePage extends State<MyHomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Expenses App'),
+          title: Text(
+            'Expenses App',
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.add),

@@ -13,13 +13,13 @@ class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
 
-
   void _submitData() {
-    if (titleController.text.isEmpty || amountController.text.isEmpty || double.parse(amountController.text) < 0)
-      return;
+    if (titleController.text.isEmpty ||
+        amountController.text.isEmpty ||
+        double.parse(amountController.text) < 0) return;
     widget._addNewTransaction(
-        titleController.text,
-        double.parse(amountController.text),
+      titleController.text,
+      double.parse(amountController.text),
     );
     Navigator.of(context).pop();
   }
@@ -28,7 +28,7 @@ class _NewTransactionState extends State<NewTransaction> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      child:  Container(
+      child: Container(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
