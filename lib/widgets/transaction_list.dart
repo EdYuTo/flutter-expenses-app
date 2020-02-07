@@ -42,8 +42,8 @@ class TransactionList extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(6),
                         child: FittedBox(
-                          child:
-                              Text('R\$${_userTransactions[index].amount.toStringAsFixed(2)}'),
+                          child: Text(
+                              'R\$${_userTransactions[index].amount.toStringAsFixed(2)}'),
                         ),
                       ),
                     ),
@@ -52,7 +52,8 @@ class TransactionList extends StatelessWidget {
                       style: Theme.of(context).textTheme.title,
                     ),
                     subtitle: Text(
-                      DateFormat.yMMMd().format(_userTransactions[index].date),
+                      DateFormat('dd/MM/yyyy')
+                          .format(_userTransactions[index].date),
                     ),
                   ),
                 );

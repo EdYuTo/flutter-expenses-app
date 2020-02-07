@@ -20,7 +20,7 @@ class Chart extends StatelessWidget {
           sum += transactions[i].amount;
 
       return {'day': DateFormat.E().format(day).substring(0, 1), 'amount': sum};
-    });
+    }).reversed.toList();
   }
 
   double get totalSpending {
@@ -41,12 +41,12 @@ class Chart extends StatelessWidget {
           children: groupedTransactionsValues.map((infoDay) {
             return Expanded(
                 child: ChartBar(
-                  infoDay['day'],
-                  infoDay['amount'],
-                  totalSpending > 0
-                      ? (infoDay['amount'] as double) / totalSpending
-                      : 0,
-                ));
+              infoDay['day'],
+              infoDay['amount'],
+              totalSpending > 0
+                  ? (infoDay['amount'] as double) / totalSpending
+                  : 0,
+            ));
           }).toList(),
         ),
       ),
