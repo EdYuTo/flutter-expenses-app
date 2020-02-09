@@ -57,70 +57,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePage extends State<MyHomePage> {
   bool _showChart = false;
-  final List<Transaction> _userTransactions = [
-    Transaction(id: '01', title: '01', amount: 1, date: DateTime.now()),
-    Transaction(id: '02', title: '02', amount: 1, date: DateTime.now()),
-    Transaction(
-        id: '03',
-        title: '03',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 1))),
-    Transaction(
-        id: '04',
-        title: '04',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 1))),
-    Transaction(
-        id: '05',
-        title: '05',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 2))),
-    Transaction(
-        id: '06',
-        title: '06',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 2))),
-    Transaction(
-        id: '07',
-        title: '07',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 3))),
-    Transaction(
-        id: '08',
-        title: '08',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 3))),
-    Transaction(
-        id: '09',
-        title: '09',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 4))),
-    Transaction(
-        id: '10',
-        title: '10',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 4))),
-    Transaction(
-        id: '11',
-        title: '11',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 5))),
-    Transaction(
-        id: '12',
-        title: '12',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 5))),
-    Transaction(
-        id: '13',
-        title: '13',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 6))),
-    Transaction(
-        id: '14',
-        title: '14',
-        amount: 1,
-        date: DateTime.now().subtract(Duration(days: 6))),
-  ];
+  final List<Transaction> _userTransactions = [];
 
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((transaction) {
