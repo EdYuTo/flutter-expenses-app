@@ -30,6 +30,7 @@ class ChartBar extends StatelessWidget {
             height: constraint.maxHeight * .6,
             width: 10,
             child: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -42,7 +43,6 @@ class ChartBar extends StatelessWidget {
                   ),
                 ),
                 FractionallySizedBox(
-                  alignment: Alignment.bottomCenter,
                   heightFactor: spendPercentage,
                   child: Container(
                     decoration: BoxDecoration(

@@ -1,10 +1,14 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:uuid/uuid.dart';
+
 import './models/transaction.dart';
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
-import 'package:uuid/uuid.dart';
 import './widgets/chart.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   //SystemChrome.setPreferredOrientations(
@@ -156,77 +160,107 @@ class _MyHomePage extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
-    final AppBar appBar = AppBar(
-      title: Text(
-        'Expenses App',
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _startAddNewTransaction(context),
-        ),
-      ],
-    );
+    final _mediaQuery = MediaQuery.of(context);
+
+    final _isLandscape = _mediaQuery.orientation == Orientation.landscape;
+    final PreferredSizeWidget _appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text(
+              'Expenses App',
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add),
+                  onTap: () => _startAddNewTransaction(context),
+                ),
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text(
+              'Expenses App',
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              ),
+            ],
+          );
 
     final transactionList = Container(
-      height: (MediaQuery.of(context).size.height -
-          MediaQuery.of(context).padding.top -
-          appBar.preferredSize.height) * .7,
+      height: (_mediaQuery.size.height -
+              _mediaQuery.padding.top -
+              _appBar.preferredSize.height) *
+          .7,
       child: TransactionList(_userTransactions, _removeTransaction),
     );
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: appBar,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (_isLandscape)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Show chart'),
-                    Switch(
-                      value: _showChart,
-                      onChanged: (val) {
-                        setState(() {
-                          _showChart = val;
-                        });
-                      },
-                    ),
-                  ],
+    final _pageBody = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (_isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Show chart',
+                  style: Theme.of(context).textTheme.title,
                 ),
-              if (!_isLandscape)
-                Container(
-                  height: (MediaQuery.of(context).size.height -
-                          MediaQuery.of(context).padding.top -
-                          appBar.preferredSize.height) *
-                      .3,
-                  child: Chart(_recentTransactions),
+                Switch.adaptive(
+                  value: _showChart,
+                  onChanged: (val) {
+                    setState(() {
+                      _showChart = val;
+                    });
+                  },
                 ),
-              if (!_isLandscape) transactionList,
-              if (_isLandscape)
-                _showChart
-                    ? Container(
-                        height: (MediaQuery.of(context).size.height -
-                                MediaQuery.of(context).padding.top -
-                                appBar.preferredSize.height) *
-                            .7,
-                        child: Chart(_recentTransactions),
-                      )
-                    : transactionList,
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _startAddNewTransaction(context),
-          child: Icon(Icons.add),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+              ],
+            ),
+          if (!_isLandscape)
+            Container(
+              height: (_mediaQuery.size.height -
+                      _mediaQuery.padding.top -
+                      _appBar.preferredSize.height) *
+                  .3,
+              child: Chart(_recentTransactions),
+            ),
+          if (!_isLandscape) transactionList,
+          if (_isLandscape)
+            _showChart
+                ? Container(
+                    height: (_mediaQuery.size.height -
+                            _mediaQuery.padding.top -
+                            _appBar.preferredSize.height) *
+                        .7,
+                    child: Chart(_recentTransactions),
+                  )
+                : transactionList,
+        ],
       ),
+    );
+
+    return SafeArea(
+      child: Platform.isIOS
+          ? CupertinoPageScaffold(
+              navigationBar: _appBar,
+              child: _pageBody,
+            )
+          : Scaffold(
+              appBar: _appBar,
+              body: _pageBody,
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
+              floatingActionButton: Platform.isIOS
+                  ? Container()
+                  : FloatingActionButton(
+                      onPressed: () => _startAddNewTransaction(context),
+                      child: Icon(Icons.add),
+                    ),
+            ),
     );
   }
 }

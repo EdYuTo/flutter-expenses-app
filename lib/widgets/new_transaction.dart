@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:expenses_app/widgets/adaptive_flat_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -44,58 +48,57 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              onSubmitted: (_) => _submitData(),
-              decoration: InputDecoration(
-                labelText: 'Title',
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+          child: Column(
+            children: [
+              TextField(
+                controller: _titleController,
+                onSubmitted: (_) => _submitData(),
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                ),
               ),
-            ),
-            TextField(
-              keyboardType: TextInputType.numberWithOptions(),
-              onSubmitted: (_) => _submitData(),
-              controller: _amountController,
-              decoration: InputDecoration(
-                labelText: 'Amount',
+              TextField(
+                keyboardType: TextInputType.numberWithOptions(),
+                onSubmitted: (_) => _submitData(),
+                controller: _amountController,
+                decoration: InputDecoration(
+                  labelText: 'Amount',
+                ),
               ),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No date chosen'
-                          : DateFormat('dd/MM/yyyy').format(_selectedDate),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+              Container(
+                height: 70,
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _selectedDate == null
+                            ? 'No date chosen'
+                            : DateFormat('dd/MM/yyyy').format(_selectedDate),
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text(
-                      'Choose date',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: _datePicker,
-                  ),
-                ],
+                    AdaptiveFlatButton("Choose date", _datePicker),
+                  ],
+                ),
               ),
-            ),
-            RaisedButton(
-              child: Text('Add transaction'),
-              color: Theme.of(context).primaryColor,
-              textColor: Theme.of(context).textTheme.button.color,
-              onPressed: _submitData,
-            ),
-          ],
+              RaisedButton(
+                child: Text('Add transaction'),
+                color: Theme.of(context).primaryColor,
+                textColor: Theme.of(context).textTheme.button.color,
+                onPressed: _submitData,
+              ),
+            ],
+          ),
         ),
       ),
     );
