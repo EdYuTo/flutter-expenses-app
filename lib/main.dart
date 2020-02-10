@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
 import './models/transaction.dart';
@@ -95,6 +94,52 @@ class _MyHomePage extends State<MyHomePage> {
         });
   }
 
+  List<Widget> _buildLandscape(
+      MediaQueryData _mediaQuery, AppBar _appBar, Widget _transactionList) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Show chart',
+            style: Theme.of(context).textTheme.title,
+          ),
+          Switch.adaptive(
+            value: _showChart,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: (_mediaQuery.size.height -
+                      _mediaQuery.padding.top -
+                      _appBar.preferredSize.height) *
+                  .7,
+              child: Chart(_recentTransactions),
+            )
+          : _transactionList,
+    ];
+  }
+
+  List<Widget> _buildPortrait(
+      MediaQueryData _mediaQuery, AppBar _appBar, Widget _transactionList) {
+    return [
+      Container(
+        height: (_mediaQuery.size.height -
+                _mediaQuery.padding.top -
+                _appBar.preferredSize.height) *
+            .3,
+        child: Chart(_recentTransactions),
+      ),
+      _transactionList
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final _mediaQuery = MediaQuery.of(context);
@@ -127,7 +172,7 @@ class _MyHomePage extends State<MyHomePage> {
             ],
           );
 
-    final transactionList = Container(
+    final _transactionList = Container(
       height: (_mediaQuery.size.height -
               _mediaQuery.padding.top -
               _appBar.preferredSize.height) *
@@ -140,42 +185,9 @@ class _MyHomePage extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (_isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Show chart',
-                  style: Theme.of(context).textTheme.title,
-                ),
-                Switch.adaptive(
-                  value: _showChart,
-                  onChanged: (val) {
-                    setState(() {
-                      _showChart = val;
-                    });
-                  },
-                ),
-              ],
-            ),
+            ..._buildLandscape(_mediaQuery, _appBar, _transactionList),
           if (!_isLandscape)
-            Container(
-              height: (_mediaQuery.size.height -
-                      _mediaQuery.padding.top -
-                      _appBar.preferredSize.height) *
-                  .3,
-              child: Chart(_recentTransactions),
-            ),
-          if (!_isLandscape) transactionList,
-          if (_isLandscape)
-            _showChart
-                ? Container(
-                    height: (_mediaQuery.size.height -
-                            _mediaQuery.padding.top -
-                            _appBar.preferredSize.height) *
-                        .7,
-                    child: Chart(_recentTransactions),
-                  )
-                : transactionList,
+            ..._buildPortrait(_mediaQuery, _appBar, _transactionList),
         ],
       ),
     );
