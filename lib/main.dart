@@ -10,6 +10,7 @@ import './widgets/new_transaction.dart';
 import './widgets/chart.dart';
 
 void main() {
+  // This is how you lock the screen orientation
   //SystemChrome.setPreferredOrientations(
   //    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MyApp());
